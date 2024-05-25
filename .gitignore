@@ -6,6 +6,8 @@ bin/
 docs/
 
 # Specific Files
+dataset.csv
+model.pkl
 thunderEnvironment.json
 thunderActivity.json
 
