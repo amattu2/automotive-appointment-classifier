@@ -50,7 +50,7 @@ pip install flask flask_restful flask_cors pickle
 ```
 
 ```bash
-PORT=5000 python app.py
+PORT=5000 python src/app.py
 ```
 
-Open your browser and go to `http://localhost:5000/predict?comment=Oil%20change,%20alignment,%20and%20rotors`
+Open your browser and go to [http://localhost:5000/predict](http://localhost:5000/predict?comment=Oil%20change,%20alignment,%20and%20rotors)
