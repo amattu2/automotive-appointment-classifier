@@ -1,6 +1,6 @@
 use udb_1;
 
-SELECT 
+SELECT
     a.AppID AS ID,
     a.Length,
     a.Comments,
@@ -13,7 +13,7 @@ SELECT
     p.CategoryID AS PackageCategoryID,
     pc.Title AS PackageCategory
 FROM
-    appointments a
+    Appointments a
         LEFT JOIN
     AppointmentLabels l ON a.LabelID = l.LabelID
         LEFT JOIN

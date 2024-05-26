@@ -8,6 +8,7 @@ docs/
 # Specific Files
 dataset.csv
 model.pkl
+vectorizer.pkl
 thunderEnvironment.json
 thunderActivity.json
 
