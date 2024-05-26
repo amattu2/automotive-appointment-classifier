@@ -1,44 +1,24 @@
-from flask import Flask, request, redirect
+from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
 import os
-import src.prediction as prediction
+import prediction
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 api = Api(app)
 
-class Test(Resource):
+class ClassifierService(Resource):
     def get(self):
-        return 'Welcome to, Test App API!'
+        if (request.args.get('comment') is None):
+            return "Invalid request. Please provide a valid input."
 
-    def post(self):
         try:
-            value = request.get_json()
-            if(value):
-                return {'Post Values': value}, 201
+            return prediction.predict_labels(request.args.get('comment'))
+        except Exception as e:
+            return "Unknown error occurred. Please try again later."
 
-            return {"error":"Invalid format."}
-
-        except Exception as error:
-            return {'error': error}
-
-class GetPredictionOutput(Resource):
-    def get(self):
-        return {"error":"Invalid Method."}
-
-    def post(self):
-        try:
-            data = request.get_json()
-            predict = prediction.predict_mpg(data)
-            predictOutput = predict
-            return {'predict':predictOutput}
-
-        except Exception as error:
-            return {'error': error}
-
-api.add_resource(Test,'/')
-api.add_resource(GetPredictionOutput,'/getPredictionOutput')
+api.add_resource(ClassifierService, '/predict')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

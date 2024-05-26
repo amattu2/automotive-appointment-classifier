@@ -1,29 +1,30 @@
 import pickle
-import pandas as pd
-import json
 
-def predict_mpg(config):
-    ##loading the model from the saved file
-    pkl_filename = "model.pkl"
-    with open(pkl_filename, 'rb') as f_in:
-        model = pickle.load(f_in)
+# NOTE: Index of the labels must match the index of the labels in the model
+whitelist = [
+  "Mechanical",
+  "Bodywork",
+  "Diagnostic",
+  "Suspension",
+  "Engine",
+  "Exhaust",
+  "Brakes",
+  "Tires"
+]
 
-    if type(config) == dict:
-        df = pd.DataFrame(config)
-    else:
-        df = config
+with open("model.pkl", 'rb') as file:
+    pickle_model = pickle.load(file)
+    file.close()
 
-    y_pred = model.predict(df)
+with open("vectorizer.pkl", 'rb') as file:
+    pickle_vectorizer = pickle.load(file)
+    file.close()
 
-    if y_pred == 0:
-        return 'Extremely Weak'
-    elif y_pred == 1:
-        return 'Weak'
-    elif y_pred == 2:
-        return 'Normal'
-    elif y_pred == 3:
-        return 'Overweight'
-    elif y_pred == 4:
-        return 'Obesity'
-    elif y_pred == 5:
-        return 'Extreme Obesity'
+def predict_labels(comment):
+    prediction = pickle_model.predict(pickle_vectorizer.transform([comment]))
+
+    result = {}
+    for i, label in enumerate(whitelist):
+        result[label] = int(prediction[0][i])
+
+    return result
